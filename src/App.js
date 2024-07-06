@@ -5,6 +5,7 @@ import Loader from "./Components/Loader";
 import Error from "./Components/Error";
 import StartScreen from "./Components/StartScreen";
 import Questions from "./Components/Questions";
+import NextButton from "./Components/NextButton";
 
 const initialState = {
 	questions: [],
@@ -43,6 +44,12 @@ function reducer( state, action ) {
 					? state.score + question.points
 					: state.score
 			};
+		case 'newQuestion':
+			return {
+				...state,
+				index: state.index + 1,
+				answer: null
+			}
 		default:
 			throw new Error('Undefined Action type');
 	}
@@ -74,7 +81,12 @@ export default function App() {
 		<Main>
 			{ 'loading' === status && <Loader /> }
 			{ 'ready' === status && <StartScreen numQuestions={numQuestions} dispatch={dispatch} /> }
-			{ 'start' === status && <Questions question={questions[index]} dispatch={dispatch} answer={answer} /> }
+			{ 'start' === status && (
+				<>
+					<Questions question={questions[index]} dispatch={dispatch} answer={answer} />
+					<NextButton dispatch={dispatch} answer={answer} />
+				</>
+			)}
 			{ 'error' === status && <Error /> }
 		</Main>
 	</div>
