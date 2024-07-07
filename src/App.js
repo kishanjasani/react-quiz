@@ -59,6 +59,13 @@ function reducer( state, action ) {
 				status: 'finished',
 				highscore: state.score > state.highscore ? state.score : state.highscore
 			}
+		case 'restart':
+			return {
+				...initialState,
+				questions: state.questions,
+				status: 'ready',
+				highscore: state.highscore
+			}
 		default:
 			throw new Error('Undefined Action type');
 	}
@@ -107,7 +114,7 @@ export default function App() {
 				</>
 			)}
 			{ 'finished' === status && (
-				<FinishScreen score={score} maxTotalScore={maxTotalScore} highscore={highscore} />
+				<FinishScreen score={score} maxTotalScore={maxTotalScore} highscore={highscore} dispatch={dispatch} />
 			) }
 			{ 'error' === status && <Error /> }
 		</Main>
